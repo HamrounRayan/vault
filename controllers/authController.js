@@ -30,21 +30,16 @@ exports.login = async (req, res) => {
   }
 };
 
-// Add this to your existing auth functions (or a new controller file)
 exports.getMe = async (req, res) => {
   try {
-    // 1. Get token from headers
     const token = req.headers.authorization?.split(' ')[1];
     if (!token) return res.status(401).json({ error: "No token provided" });
 
-    // 2. Verify token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     
-    // 3. Find user (excluding password)
     const user = await User.findById(decoded.userId).select('-password');
     if (!user) return res.status(404).json({ error: "User not found" });
 
-    // 4. Return user data
     res.json({
       username: user.username,
       balance: user.balance

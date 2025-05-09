@@ -16,24 +16,19 @@ exports.transact = async (req, res) => {
   const token = req.headers.authorization.split(' ')[1];
   
   try {
-    // Verify sender
     const decoded = jwt.verify(token,process.env.JWT_SECRET);
     const fromUser = await User.findById(decoded.userId);
     if (!fromUser) return res.status(404).json({ error: "Sender not found" });
 
-    // Find receiver
     const toUser = await User.findOne({ username: to });
     if (!toUser) return res.status(404).json({ error: "Receiver not found" });
 
-    // Validate balance
     if (fromUser.balance < amount) {
       return res.status(400).json({ error: "Insufficient balance" });
     }
 
-    // Get last block
     const latestBlock = await Block.findOne().sort({ index: -1 });
 
-    // Create new block
     const newBlock = new Block({
       index: latestBlock ? latestBlock.index + 1 : 0,
       transactions: [{

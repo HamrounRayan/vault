@@ -1,7 +1,7 @@
 const Block = require('../models/Block');
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
-const JWT_SECRET = "your-secret-key";
+require('dotenv').config();
 const mongoose = require('mongoose');
 
 const calculateHash = (index, timestamp, transactions, previousHash) => {
@@ -17,7 +17,7 @@ exports.transact = async (req, res) => {
   
   try {
     // Verify sender
-    const decoded = jwt.verify(token, JWT_SECRET);
+    const decoded = jwt.verify(token,process.env.JWT_SECRET);
     const fromUser = await User.findById(decoded.userId);
     if (!fromUser) return res.status(404).json({ error: "Sender not found" });
 

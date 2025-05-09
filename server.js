@@ -1,11 +1,11 @@
-const uri = "mongodb+srv://orhamroun:OY9XqQRBkleb1N4J@cluster0.nx9c1j2.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
+require('dotenv').config();
 const app = express();
 app.use(cors());
 app.use(express.json());
-mongoose.connect(uri)
+mongoose.connect(process.env.URI)
   .then(() => console.log("Connected to MongoDB"))
   .catch((err) => console.error("MongoDB connection error:", err));
 

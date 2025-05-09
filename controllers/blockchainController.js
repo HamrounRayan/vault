@@ -72,3 +72,12 @@ exports.transact = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+exports.getBlockchain = async (req, res) => {
+  try {
+    const chain = await Block.find().sort({ index: 1 });
+    res.json(chain);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};

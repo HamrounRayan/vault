@@ -16,6 +16,9 @@ const authRoutes = require('./routes/authRoutes');
 const transact = require('./routes/transactionRoutes');
 app.use('/api/auth', authRoutes);
 app.use('/api/transact', transact);
+app.get('/', (req, res) => {
+  res.send('Hello from Vault backend! 🎉');
+});
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
